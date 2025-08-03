@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Wardrobe Guide - All Skin Tones & Occasions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .skin-tone-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .skin-tone-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .skin-tone-card.active {
+            border: 3px solid #667eea;
+            transform: translateY(-5px);
+        }
+        
+        .occasion-tab {
+            transition: all 0.3s ease;
+        }
+        
+        .occasion-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .color-swatch {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 2px;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .outfit-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="gradient-bg w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center">
+                <span class="text-5xl">👗</span>
+            </div>
+            <h1 class="text-5xl font-bold text-gray-800 mb-4">Complete Wardrobe Guide</h1>
+            <p class="text-gray-600 text-xl max-w-3xl mx-auto">Discover perfect outfits for your skin tone and every occasion. Get personalized color palettes, styling tips, and complete wardrobe recommendations.</p>
+        </div>
+
+        <!-- Skin Tone Selection -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Choose Your Skin Tone</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Fair/Light Skin -->
+                <div class="skin-tone-card bg-white rounded-2xl p-6 shadow-lg text-center" onclick="selectSkinTone('fair')">
+                    <div class="w-20 h-20 rounded-full mx-auto mb-4" style="background: linear-gradient(135deg, #fdbcb4 0%, #f8d7da 100%);"></div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Fair/Light</h3>
+                    <p class="text-gray-600 text-sm">Cool or warm undertones, burns easily, light eyes common</p>
+                </div>
+
+                <!-- Medium Skin -->
+                <div class="skin-tone-card bg-white rounded-2xl p-6 shadow-lg text-center" onclick="selectSkinTone('medium')">
+                    <div class="w-20 h-20 rounded-full mx-auto mb-4" style="background: linear-gradient(135deg, #d4a574 0%, #e6c2a6 100%);"></div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Medium</h3>
+                    <p class="text-gray-600 text-sm">Neutral to warm undertones, tans well, versatile coloring</p>
+                </div>
+
+                <!-- Olive Skin -->
+                <div class="skin-tone-card bg-white rounded-2xl p-6 shadow-lg text-center" onclick="selectSkinTone('olive')">
+                    <div class="w-20 h-20 rounded-full mx-auto mb-4" style="background: linear-gradient(135deg, #c4a574 0%, #b8956a 100%);"></div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Olive</h3>
+                    <p class="text-gray-600 text-sm">Green/yellow undertones, Mediterranean heritage common</p>
+                </div>
+
+                <!-- Deep/Dark Skin -->
+                <div class="skin-tone-card bg-white rounded-2xl p-6 shadow-lg text-center" onclick="selectSkinTone('deep')">
+                    <div class="w-20 h-20 rounded-full mx-auto mb-4" style="background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);"></div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Deep/Dark</h3>
+                    <p class="text-gray-600 text-sm">Rich undertones, rarely burns, stunning in bold colors</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Selected Skin Tone Display -->
+        <div id="selectedSkinTone" class="hidden mb-8">
+            <div class="bg-white rounded-2xl p-6 shadow-lg">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">Your Skin Tone: <span id="skinToneName"></span></h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-3">Best Colors for You:</h4>
+                        <div id="bestColors" class="mb-4"></div>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-3">Colors to Avoid:</h4>
+                        <div id="avoidColors" class="mb-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Occasion Tabs -->
+        <div class="mb-8">
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button class="occasion-tab px-6 py-3 rounded-full font-medium transition-all duration-300 bg-white text-gray-700 hover:bg-gray-100" onclick="selectOccasion('work')" data-occasion="work">
+                    💼 Work & Professional
+                </button>
+                <button class="occasion-tab px-6 py-3 rounded-full font-medium transition-all duration-300 bg-white text-gray-700 hover:bg-gray-100" onclick="selectOccasion('casual')" data-occasion="casual">
+                    👕 Casual & Weekend
+                </button>
+                <button class="occasion-tab px-6 py-3 rounded-full font-medium transition-all duration-300 bg-white text-gray-700 hover:bg-gray-100" onclick="selectOccasion('formal')" data-occasion="formal">
+                    👗 Formal & Events
+                </button>
+                <button class="occasion-tab px-6 py-3 rounded-full font-medium transition-all duration-300 bg-white text-gray-700 hover:bg-gray-100" onclick="selectOccasion('date')" data-occasion="date">
+                    💕 Date Night
+                </button>
+                <button class="occasion-tab px-6 py-3 rounded-full font-medium transition-all duration-300 bg-white text-gray-700 hover:bg-gray-100" onclick="selectOccasion('seasonal')" data-occasion="seasonal">
+                    🌸 Seasonal
+                </button>
+            </div>
+        </div>
+
+        <!-- Outfit Recommendations -->
+        <div id="outfitRecommendations" class="hidden">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Perfect Outfits for You</h2>
+            <div id="outfitGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Outfit cards will be populated here -->
+            </div>
+        </div>
+
+        <!-- Style Tips Section -->
+        <div id="styleTips" class="hidden mt-12">
+            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Personalized Style Tips</h3>
+                <div id="tipsContent" class="grid md:grid-cols-2 gap-8">
+                    <!-- Tips will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Color Palette Guide -->
+        <div class="mt-12 bg-white rounded-2xl p-8 shadow-lg">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Universal Color Combinations</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <h4 class="font-semibold text-gray-700 mb-3">Classic Neutrals</h4>
+                    <div class="flex justify-center mb-2">
+                        <span class="color-swatch" style="background: #000000;"></span>
+                        <span class="color-swatch" style="background: #ffffff;"></span>
+                        <span class="color-swatch" style="background: #8B4513;"></span>
+                        <span class="color-swatch" style="background: #F5F5DC;"></span>
+                    </div>
+                    <p class="text-sm text-gray-600">Always elegant and versatile</p>
+                </div>
+                <div class="text-center">
+                    <h4 class="font-semibold text-gray-700 mb-3">Earth Tones</h4>
+                    <div class="flex justify-center mb-2">
+                        <span class="color-swatch" style="background: #8B4513;"></span>
+                        <span class="color-swatch" style="background: #D2691E;"></span>
+                        <span class="color-swatch" style="background: #556B2F;"></span>
+                        <span class="color-swatch" style="background: #CD853F;"></span>
+                    </div>
+                    <p class="text-sm text-gray-600">Warm and natural</p>
+                </div>
+                <div class="text-center">
+                    <h4 class="font-semibold text-gray-700 mb-3">Jewel Tones</h4>
+                    <div class="flex justify-center mb-2">
+                        <span class="color-swatch" style="background: #4B0082;"></span>
+                        <span class="color-swatch" style="background: #008B8B;"></span>
+                        <span class="color-swatch" style="background: #B22222;"></span>
+                        <span class="color-swatch" style="background: #228B22;"></span>
+                    </div>
+                    <p class="text-sm text-gray-600">Rich and sophisticated</p>
+                </div>
+                <div class="text-center">
+                    <h4 class="font-semibold text-gray-700 mb-3">Pastels</h4>
+                    <div class="flex justify-center mb-2">
+                        <span class="color-swatch" style="background: #FFB6C1;"></span>
+                        <span class="color-swatch" style="background: #E6E6FA;"></span>
+                        <span class="color-swatch" style="background: #F0E68C;"></span>
+                        <span class="color-swatch" style="background: #98FB98;"></span>
+                    </div>
+                    <p class="text-sm text-gray-600">Soft and feminine</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedSkinTone = null;
+        let selectedOccasion = null;
+
+        // Skin tone data
+        const skinToneData = {
+            fair: {
+                name: "Fair/Light Skin",
+                bestColors: [
+                    { name: "Soft Pink", color: "#FFB6C1" },
+                    { name: "Lavender", color: "#E6E6FA" },
+                    { name: "Mint Green", color: "#98FB98" },
+                    { name: "Light Blue", color: "#ADD8E6" },
+                    { name: "Coral", color: "#FF7F50" },
+                    { name: "Cream", color: "#F5F5DC" }
+                ],
+                avoidColors: [
+                    { name: "Bright Orange", color: "#FF4500" },
+                    { name: "Neon Yellow", color: "#FFFF00" },
+                    { name: "Hot Pink", color: "#FF1493" },
+                    { name: "Bright Red", color: "#FF0000" }
+                ]
+            },
+            medium: {
+                name: "Medium Skin",
+                bestColors: [
+                    { name: "Warm Red", color: "#DC143C" },
+                    { name: "Golden Yellow", color: "#FFD700" },
+                    { name: "Turquoise", color: "#40E0D0" },
+                    { name: "Olive Green", color: "#808000" },
+                    { name: "Burnt Orange", color: "#CC5500" },
+                    { name: "Deep Purple", color: "#663399" }
+                ],
+                avoidColors: [
+                    { name: "Pale Pink", color: "#FFB6C1" },
+                    { name: "Light Yellow", color: "#FFFFE0" },
+                    { name: "Washed Out Blue", color: "#E0F6FF" }
+                ]
+            },
+            olive: {
+                name: "Olive Skin",
+                bestColors: [
+                    { name: "Forest Green", color: "#228B22" },
+                    { name: "Burgundy", color: "#800020" },
+                    { name: "Navy Blue", color: "#000080" },
+                    { name: "Mustard", color: "#FFDB58" },
+                    { name: "Rust", color: "#B7410E" },
+                    { name: "Plum", color: "#8E4585" }
+                ],
+                avoidColors: [
+                    { name: "Orange", color: "#FFA500" },
+                    { name: "Bright Yellow", color: "#FFFF00" },
+                    { name: "Light Green", color: "#90EE90" }
+                ]
+            },
+            deep: {
+                name: "Deep/Dark Skin",
+                bestColors: [
+                    { name: "Bright White", color: "#FFFFFF" },
+                    { name: "Electric Blue", color: "#0080FF" },
+                    { name: "Fuchsia", color: "#FF00FF" },
+                    { name: "Emerald", color: "#50C878" },
+                    { name: "Gold", color: "#FFD700" },
+                    { name: "Coral", color: "#FF7F50" }
+                ],
+                avoidColors: [
+                    { name: "Muddy Brown", color: "#8B4513" },
+                    { name: "Dull Green", color: "#556B2F" },
+                    { name: "Washed Colors", color: "#D3D3D3" }
+                ]
+            }
+        };
+
+        // Outfit recommendations by occasion and skin tone
+        const outfitData = {
+            work: {
+                fair: [
+                    {
+                        title: "Classic Professional",
+                        items: ["Navy blazer", "White blouse", "Gray trousers", "Black pumps"],
+                        colors: ["Navy", "White", "Gray"],
+                        accessories: ["Pearl earrings", "Black leather bag", "Silver watch"]
+                    },
+                    {
+                        title: "Soft Power Look",
+                        items: ["Blush pink blazer", "Cream blouse", "Black pencil skirt", "Nude heels"],
+                        colors: ["Blush Pink", "Cream", "Black"],
+                        accessories: ["Rose gold jewelry", "Structured handbag"]
+                    }
+                ],
+                medium: [
+                    {
+                        title: "Warm Professional",
+                        items: ["Burgundy blazer", "Ivory shirt", "Charcoal pants", "Brown oxfords"],
+                        colors: ["Burgundy", "Ivory", "Charcoal"],
+                        accessories: ["Gold watch", "Leather briefcase", "Amber earrings"]
+                    },
+                    {
+                        title: "Modern Executive",
+                        items: ["Teal dress", "Black cardigan", "Black heels", "Statement necklace"],
+                        colors: ["Teal", "Black"],
+                        accessories: ["Silver jewelry", "Black tote bag"]
+                    }
+                ],
+                olive: [
+                    {
+                        title: "Earthy Professional",
+                        items: ["Forest green blazer", "Cream blouse", "Brown trousers", "Tan loafers"],
+                        colors: ["Forest Green", "Cream", "Brown"],
+                        accessories: ["Gold accessories", "Leather bag", "Wooden watch"]
+                    },
+                    {
+                        title: "Sophisticated Edge",
+                        items: ["Plum dress", "Black blazer", "Black pumps", "Silver jewelry"],
+                        colors: ["Plum", "Black"],
+                        accessories: ["Statement earrings", "Structured bag"]
+                    }
+                ],
+                deep: [
+                    {
+                        title: "Bold Professional",
+                        items: ["Bright white blazer", "Royal blue blouse", "Black trousers", "Black heels"],
+                        colors: ["White", "Royal Blue", "Black"],
+                        accessories: ["Gold jewelry", "Black leather bag", "Bold watch"]
+                    },
+                    {
+                        title: "Power Statement",
+                        items: ["Emerald dress", "Black cardigan", "Gold accessories", "Black pumps"],
+                        colors: ["Emerald", "Black", "Gold"],
+                        accessories: ["Statement necklace", "Gold watch"]
+                    }
+                ]
+            },
+            casual: {
+                fair: [
+                    {
+                        title: "Soft Weekend",
+                        items: ["Lavender sweater", "White jeans", "Pink sneakers", "Denim jacket"],
+                        colors: ["Lavender", "White", "Pink"],
+                        accessories: ["Delicate jewelry", "Canvas tote", "Sunglasses"]
+                    },
+                    {
+                        title: "Fresh & Clean",
+                        items: ["Mint green top", "Light wash jeans", "White sneakers", "Cream cardigan"],
+                        colors: ["Mint Green", "Light Blue", "White"],
+                        accessories: ["Silver jewelry", "Crossbody bag"]
+                    }
+                ],
+                medium: [
+                    {
+                        title: "Warm Casual",
+                        items: ["Burnt orange sweater", "Dark jeans", "Brown boots", "Denim jacket"],
+                        colors: ["Burnt Orange", "Dark Blue", "Brown"],
+                        accessories: ["Gold jewelry", "Leather bag", "Scarf"]
+                    },
+                    {
+                        title: "Vibrant Weekend",
+                        items: ["Turquoise top", "White jeans", "Tan sandals", "Light cardigan"],
+                        colors: ["Turquoise", "White", "Tan"],
+                        accessories: ["Colorful accessories", "Woven bag"]
+                    }
+                ],
+                olive: [
+                    {
+                        title: "Natural Casual",
+                        items: ["Olive green top", "Brown jeans", "Tan boots", "Rust cardigan"],
+                        colors: ["Olive Green", "Brown", "Rust"],
+                        accessories: ["Wooden jewelry", "Leather bag", "Earth-tone scarf"]
+                    },
+                    {
+                        title: "Rich Tones",
+                        items: ["Burgundy sweater", "Dark jeans", "Black boots", "Navy jacket"],
+                        colors: ["Burgundy", "Dark Blue", "Black"],
+                        accessories: ["Gold accents", "Structured bag"]
+                    }
+                ],
+                deep: [
+                    {
+                        title: "Bold Casual",
+                        items: ["Bright coral top", "White jeans", "Gold sandals", "Light jacket"],
+                        colors: ["Coral", "White", "Gold"],
+                        accessories: ["Statement jewelry", "Colorful bag", "Bold sunglasses"]
+                    },
+                    {
+                        title: "Electric Style",
+                        items: ["Electric blue sweater", "Black jeans", "White sneakers", "Denim jacket"],
+                        colors: ["Electric Blue", "Black", "White"],
+                        accessories: ["Silver jewelry", "Modern bag"]
+                    }
+                ]
+            },
+            formal: {
+                fair: [
+                    {
+                        title: "Elegant Evening",
+                        items: ["Soft pink gown", "Silver heels", "Pearl jewelry", "Satin clutch"],
+                        colors: ["Soft Pink", "Silver"],
+                        accessories: ["Pearl necklace", "Silver clutch", "Delicate bracelet"]
+                    },
+                    {
+                        title: "Classic Formal",
+                        items: ["Navy cocktail dress", "Nude heels", "Gold jewelry", "Beige clutch"],
+                        colors: ["Navy", "Nude", "Gold"],
+                        accessories: ["Gold earrings", "Elegant clutch"]
+                    }
+                ],
+                medium: [
+                    {
+                        title: "Warm Elegance",
+                        items: ["Burgundy gown", "Gold heels", "Gold jewelry", "Metallic clutch"],
+                        colors: ["Burgundy", "Gold"],
+                        accessories: ["Statement earrings", "Gold clutch", "Bracelet"]
+                    },
+                    {
+                        title: "Vibrant Formal",
+                        items: ["Emerald dress", "Black heels", "Silver jewelry", "Black clutch"],
+                        colors: ["Emerald", "Black", "Silver"],
+                        accessories: ["Silver necklace", "Evening bag"]
+                    }
+                ],
+                olive: [
+                    {
+                        title: "Rich Formal",
+                        items: ["Deep plum gown", "Black heels", "Gold jewelry", "Black clutch"],
+                        colors: ["Plum", "Black", "Gold"],
+                        accessories: ["Gold statement pieces", "Elegant clutch"]
+                    },
+                    {
+                        title: "Sophisticated",
+                        items: ["Forest green dress", "Nude heels", "Gold accessories", "Tan clutch"],
+                        colors: ["Forest Green", "Nude", "Gold"],
+                        accessories: ["Gold jewelry", "Leather clutch"]
+                    }
+                ],
+                deep: [
+                    {
+                        title: "Show-Stopping",
+                        items: ["Bright white gown", "Gold heels", "Gold jewelry", "Metallic clutch"],
+                        colors: ["White", "Gold"],
+                        accessories: ["Bold gold jewelry", "Statement clutch"]
+                    },
+                    {
+                        title: "Electric Elegance",
+                        items: ["Royal blue dress", "Silver heels", "Silver jewelry", "Metallic bag"],
+                        colors: ["Royal Blue", "Silver"],
+                        accessories: ["Statement jewelry", "Evening clutch"]
+                    }
+                ]
+            },
+            date: {
+                fair: [
+                    {
+                        title: "Romantic Date",
+                        items: ["Blush pink dress", "Nude heels", "Delicate jewelry", "Small purse"],
+                        colors: ["Blush Pink", "Nude"],
+                        accessories: ["Pearl earrings", "Dainty necklace", "Clutch"]
+                    },
+                    {
+                        title: "Chic Evening",
+                        items: ["Lavender top", "Black jeans", "Black heels", "Silver jewelry"],
+                        colors: ["Lavender", "Black", "Silver"],
+                        accessories: ["Silver accessories", "Small bag"]
+                    }
+                ],
+                medium: [
+                    {
+                        title: "Warm Romance",
+                        items: ["Coral dress", "Tan heels", "Gold jewelry", "Brown clutch"],
+                        colors: ["Coral", "Tan", "Gold"],
+                        accessories: ["Gold earrings", "Leather clutch"]
+                    },
+                    {
+                        title: "Vibrant Date",
+                        items: ["Turquoise top", "White jeans", "Nude heels", "Gold accessories"],
+                        colors: ["Turquoise", "White", "Gold"],
+                        accessories: ["Statement jewelry", "Crossbody bag"]
+                    }
+                ],
+                olive: [
+                    {
+                        title: "Earthy Romance",
+                        items: ["Burgundy dress", "Brown heels", "Gold jewelry", "Tan clutch"],
+                        colors: ["Burgundy", "Brown", "Gold"],
+                        accessories: ["Gold accessories", "Leather bag"]
+                    },
+                    {
+                        title: "Sophisticated Date",
+                        items: ["Forest green top", "Black jeans", "Black heels", "Gold jewelry"],
+                        colors: ["Forest Green", "Black", "Gold"],
+                        accessories: ["Statement pieces", "Small bag"]
+                    }
+                ],
+                deep: [
+                    {
+                        title: "Bold Romance",
+                        items: ["Fuchsia dress", "Black heels", "Silver jewelry", "Black clutch"],
+                        colors: ["Fuchsia", "Black", "Silver"],
+                        accessories: ["Statement jewelry", "Evening clutch"]
+                    },
+                    {
+                        title: "Electric Date",
+                        items: ["Bright coral top", "White jeans", "Gold heels", "Gold jewelry"],
+                        colors: ["Coral", "White", "Gold"],
+                        accessories: ["Bold accessories", "Stylish bag"]
+                    }
+                ]
+            },
+            seasonal: {
+                fair: [
+                    {
+                        title: "Spring Fresh",
+                        items: ["Pastel floral dress", "White cardigan", "Nude flats", "Light scarf"],
+                        colors: ["Pastels", "White", "Nude"],
+                        accessories: ["Delicate jewelry", "Light bag", "Floral scarf"]
+                    },
+                    {
+                        title: "Summer Breeze",
+                        items: ["Mint green sundress", "White sandals", "Straw hat", "Canvas bag"],
+                        colors: ["Mint Green", "White"],
+                        accessories: ["Sun hat", "Beach bag", "Sunglasses"]
+                    }
+                ],
+                medium: [
+                    {
+                        title: "Autumn Warmth",
+                        items: ["Burnt orange sweater", "Brown boots", "Dark jeans", "Plaid scarf"],
+                        colors: ["Burnt Orange", "Brown", "Dark Blue"],
+                        accessories: ["Warm scarf", "Leather bag", "Cozy accessories"]
+                    },
+                    {
+                        title: "Winter Rich",
+                        items: ["Deep red coat", "Black boots", "Gray sweater", "Warm scarf"],
+                        colors: ["Deep Red", "Black", "Gray"],
+                        accessories: ["Warm accessories", "Leather gloves"]
+                    }
+                ],
+                olive: [
+                    {
+                        title: "Earth Seasons",
+                        items: ["Olive green jacket", "Brown boots", "Rust sweater", "Plaid scarf"],
+                        colors: ["Olive Green", "Brown", "Rust"],
+                        accessories: ["Natural accessories", "Leather bag"]
+                    },
+                    {
+                        title: "Rich Winter",
+                        items: ["Burgundy coat", "Black boots", "Cream sweater", "Dark scarf"],
+                        colors: ["Burgundy", "Black", "Cream"],
+                        accessories: ["Warm accessories", "Structured bag"]
+                    }
+                ],
+                deep: [
+                    {
+                        title: "Bright Seasons",
+                        items: ["Bright white coat", "Colorful scarf", "Black boots", "Bold accessories"],
+                        colors: ["White", "Bright Colors", "Black"],
+                        accessories: ["Colorful scarf", "Statement bag"]
+                    },
+                    {
+                        title: "Electric Winter",
+                        items: ["Electric blue coat", "Black boots", "White sweater", "Metallic scarf"],
+                        colors: ["Electric Blue", "Black", "White"],
+                        accessories: ["Metallic accessories", "Modern bag"]
+                    }
+                ]
+            }
+        };
+
+        function selectSkinTone(tone) {
+            selectedSkinTone = tone;
+            
+            // Update UI
+            document.querySelectorAll('.skin-tone-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            event.target.closest('.skin-tone-card').classList.add('active');
+            
+            // Show selected skin tone info
+            const skinToneInfo = document.getElementById('selectedSkinTone');
+            const skinToneName = document.getElementById('skinToneName');
+            const bestColors = document.getElementById('bestColors');
+            const avoidColors = document.getElementById('avoidColors');
+            
+            skinToneInfo.classList.remove('hidden');
+            skinToneName.textContent = skinToneData[tone].name;
+            
+            // Display best colors
+            bestColors.innerHTML = skinToneData[tone].bestColors.map(color => 
+                `<span class="inline-flex items-center bg-gray-100 rounded-full px-3 py-1 text-sm font-medium text-gray-700 mr-2 mb-2">
+                    <span class="color-swatch mr-2" style="background: ${color.color}; width: 20px; height: 20px;"></span>
+                    ${color.name}
+                </span>`
+            ).join('');
+            
+            // Display colors to avoid
+            avoidColors.innerHTML = skinToneData[tone].avoidColors.map(color => 
+                `<span class="inline-flex items-center bg-red-50 rounded-full px-3 py-1 text-sm font-medium text-red-700 mr-2 mb-2">
+                    <span class="color-swatch mr-2" style="background: ${color.color}; width: 20px; height: 20px;"></span>
+                    ${color.name}
+                </span>`
+            ).join('');
+            
+            // Update outfit recommendations if occasion is selected
+            if (selectedOccasion) {
+                updateOutfitRecommendations();
+            }
+        }
+
+        function selectOccasion(occasion) {
+            selectedOccasion = occasion;
+            
+            // Update tab UI
+            document.querySelectorAll('.occasion-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-occasion="${occasion}"]`).classList.add('active');
+            
+            // Update outfit recommendations if skin tone is selected
+            if (selectedSkinTone) {
+                updateOutfitRecommendations();
+            }
+        }
+
+        function updateOutfitRecommendations() {
+            if (!selectedSkinTone || !selectedOccasion) return;
+            
+            const outfitRecommendations = document.getElementById('outfitRecommendations');
+            const outfitGrid = document.getElementById('outfitGrid');
+            const styleTips = document.getElementById('styleTips');
+            
+            outfitRecommendations.classList.remove('hidden');
+            styleTips.classList.remove('hidden');
+            
+            const outfits = outfitData[selectedOccasion][selectedSkinTone];
+            
+            outfitGrid.innerHTML = outfits.map(outfit => `
+                <div class="outfit-card rounded-2xl p-6 shadow-lg fade-in">
+                    <h4 class="text-xl font-bold mb-4">${outfit.title}</h4>
+                    <div class="mb-4">
+                        <h5 class="font-semibold mb-2">Outfit Items:</h5>
+                        <ul class="space-y-1">
+                            ${outfit.items.map(item => `<li class="text-sm">• ${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="mb-4">
+                        <h5 class="font-semibold mb-2">Color Palette:</h5>
+                        <div class="flex flex-wrap">
+                            ${outfit.colors.map(color => `<span class="bg-white bg-opacity-20 rounded-full px-3 py-1 text-xs mr-2 mb-1">${color}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold mb-2">Accessories:</h5>
+                        <ul class="space-y-1">
+                            ${outfit.accessories.map(accessory => `<li class="text-sm">• ${accessory}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Update style tips
+            updateStyleTips();
+        }
+
+        function updateStyleTips() {
+            const tipsContent = document.getElementById('tipsContent');
+            const skinTone = skinToneData[selectedSkinTone];
+            
+            const tips = {
+                work: {
+                    title: "Professional Styling Tips",
+                    tips: [
+                        "Stick to your best colors for confidence",
+                        "Invest in quality basics in neutral tones",
+                        "Add personality with accessories in your palette",
+                        "Ensure proper fit - tailoring makes a difference"
+                    ]
+                },
+                casual: {
+                    title: "Casual Styling Tips",
+                    tips: [
+                        "Mix textures for visual interest",
+                        "Use your best colors in statement pieces",
+                        "Layer with neutrals from your palette",
+                        "Comfort should never compromise style"
+                    ]
+                },
+                formal: {
+                    title: "Formal Event Tips",
+                    tips: [
+                        "Choose one statement piece in your best color",
+                        "Balance bold colors with neutrals",
+                        "Consider the event's dress code and venue",
+                        "Confidence is your best accessory"
+                    ]
+                },
+                date: {
+                    title: "Date Night Styling",
+                    tips: [
+                        "Wear colors that make you feel confident",
+                        "Choose comfortable yet stylish pieces",
+                        "Add a touch of your personality",
+                        "Consider the date location and activity"
+                    ]
+                },
+                seasonal: {
+                    title: "Seasonal Styling",
+                    tips: [
+                        "Adapt your color palette to the season",
+                        "Layer strategically with your best colors",
+                        "Invest in seasonal accessories",
+                        "Don't forget weather-appropriate choices"
+                    ]
+                }
+            };
+            
+            const currentTips = tips[selectedOccasion];
+            
+            tipsContent.innerHTML = `
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">${currentTips.title}</h4>
+                    <ul class="space-y-2">
+                        ${currentTips.tips.map(tip => `<li class="flex items-start"><span class="text-purple-500 mr-2">•</span><span class="text-gray-600">${tip}</span></li>`).join('')}
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Your Color Guidelines</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <h5 class="font-medium text-gray-700 mb-2">Best Colors:</h5>
+                            <div class="flex flex-wrap">
+                                ${skinTone.bestColors.slice(0, 3).map(color => `<span class="color-swatch mr-1 mb-1" style="background: ${color.color};" title="${color.name}"></span>`).join('')}
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-gray-700 mb-2">Avoid:</h5>
+                            <div class="flex flex-wrap">
+                                ${skinTone.avoidColors.slice(0, 3).map(color => `<span class="color-swatch mr-1 mb-1" style="background: ${color.color};" title="${color.name}"></span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize with a default selection for demo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-select first skin tone and occasion for demo
+            setTimeout(() => {
+                document.querySelector('.skin-tone-card').click();
+                document.querySelector('.occasion-tab').click();
+            }, 1000);
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'968c4420d0db7643',t:'MTc1NDEyMzk4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

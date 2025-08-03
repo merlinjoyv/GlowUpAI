@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlowUpAI - Welcome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(45deg, 
+                #4169e1, /* Royal Blue */
+                #6a5acd, /* Slate Blue */
+                #7b68ee, /* Medium Slate Blue */
+                #9370db, /* Medium Purple */
+                #ba55d3, /* Medium Orchid */
+                #da70d6, /* Orchid */
+                #ff69b4, /* Hot Pink */
+                #ff1493, /* Deep Pink */
+                #c71585, /* Medium Violet Red */
+                #8b008b, /* Dark Magenta */
+                #9400d3, /* Violet */
+                #4b0082, /* Indigo */
+                #4169e1  /* Back to Royal Blue */
+            );
+            background-size: 1000% 1000%;
+            animation: rainbow 10s ease infinite;
+        }
+        
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glow-button {
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.6);
+            transform: translateY(-2px);
+        }
+        .input-glow:focus {
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex items-center justify-center p-4">
+    <div class="glass-effect rounded-3xl p-8 max-w-md w-full shadow-2xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2">Welcome to GlowUpAI</h1>
+            <p class="text-xl text-purple-100 font-medium">Let's style together, Gorgeous! 💅</p>
+        </div>
+
+        <!-- Form Section -->
+        <div id="formSection">
+            <form id="userForm" class="space-y-6">
+                <div>
+                    <label class="block text-white font-medium mb-2">Name</label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        required
+                        class="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-purple-200 border border-white/30 focus:outline-none focus:border-white/50 input-glow transition-all"
+                        placeholder="Enter your beautiful name"
+                    >
+                </div>
+
+                <div>
+                    <label class="block text-white font-medium mb-2">Email ID</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        required
+                        class="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-purple-200 border border-white/30 focus:outline-none focus:border-white/50 input-glow transition-all"
+                        placeholder="your.email@example.com"
+                    >
+                    <div id="emailError" class="text-red-300 text-sm mt-1 hidden">Please enter a valid email address</div>
+                </div>
+
+                <div>
+                    <label class="block text-white font-medium mb-2">Phone Number</label>
+                    <input 
+                        type="tel" 
+                        id="phone" 
+                        required
+                        maxlength="10"
+                        class="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-purple-200 border border-white/30 focus:outline-none focus:border-white/50 input-glow transition-all"
+                        placeholder="1234567890"
+                    >
+                    <div id="phoneError" class="text-red-300 text-sm mt-1 hidden">Please enter a valid 10-digit phone number</div>
+                </div>
+
+                <button 
+                    type="submit" 
+                    id="submitBtn"
+                    class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-xl glow-button transition-all duration-300"
+                >
+                    <span id="btnText">Enter & Continue ✨</span>
+                    <span id="btnLoader" class="hidden">Loading... ⏳</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Options Section (Hidden Initially) -->
+        <div id="optionsSection" class="hidden">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-white mb-2">Choose Your Experience</h2>
+                <p class="text-purple-100">What would you like to explore today?</p>
+            </div>
+
+            <div class="space-y-4">
+                <button 
+                    onclick="navigateToPage('skin.html')"
+                    class="w-full bg-gradient-to-r from-green-400 to-blue-500 text-white font-semibold py-4 px-6 rounded-xl glow-button transition-all duration-300 flex items-center justify-center space-x-2"
+                >
+                    <span>🌟</span>
+                    <span>Random Recommendations</span>
+                </button>
+
+                <button 
+                    onclick="navigateToPage('messageAi.html')"
+                    class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-4 px-6 rounded-xl glow-button transition-all duration-300 flex items-center justify-center space-x-2"
+                >
+                    <span>🤖</span>
+                    <span>AI Chat</span>
+                </button>
+
+                <button 
+                    onclick="navigateToPage('final.html')"
+                    class="w-full bg-gradient-to-r from-orange-400 to-red-500 text-white font-semibold py-4 px-6 rounded-xl glow-button transition-all duration-300 flex items-center justify-center space-x-2"
+                >
+                    <span>👗</span>
+                    <span>Wardrobe Recommendations</span>
+                </button>
+            </div>
+
+            <div class="mt-6 text-center">
+                <p class="text-purple-200 text-sm">Welcome back, <span id="welcomeName" class="font-semibold"></span>! 💖</p>
+            </div>
+        </div>
+
+        <!-- Admin Panel (Hidden Initially) -->
+        <div id="adminPanel" class="hidden">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-white mb-2">📊 User Submissions</h2>
+                <p class="text-purple-100">All form submissions stored in browser</p>
+            </div>
+
+            <div class="mb-4 flex justify-between">
+                <button 
+                    onclick="exportToCSV()"
+                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm transition-all"
+                >
+                    📥 Export CSV
+                </button>
+                <button 
+                    onclick="clearAllData()"
+                    class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition-all"
+                >
+                    🗑️ Clear All
+                </button>
+            </div>
+
+            <div id="submissionsTable" class="bg-white/10 rounded-xl p-4 max-h-96 overflow-y-auto">
+                <!-- Table will be populated by JavaScript -->
+            </div>
+
+            <button 
+                onclick="backToForm()"
+                class="w-full mt-4 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-xl transition-all"
+            >
+                ← Back to Form
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Check if user data exists in localStorage on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const userData = localStorage.getItem('glowUpUserData');
+            if (userData) {
+                const user = JSON.parse(userData);
+                showOptions(user.name);
+            }
+            
+            // Check for admin access (press Ctrl+Shift+A)
+            document.addEventListener('keydown', function(e) {
+                // Check for Ctrl+Shift+A (works across different browsers)
+                if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.keyCode === 65)) {
+                    e.preventDefault(); // Prevent browser default behavior
+                    showAdminPanel();
+                }
+            });
+        });
+
+        // Form validation and submission
+        document.getElementById('userForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            
+            // Reset error messages
+            document.getElementById('emailError').classList.add('hidden');
+            document.getElementById('phoneError').classList.add('hidden');
+            
+            let isValid = true;
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').classList.remove('hidden');
+                isValid = false;
+            }
+            
+            // Phone validation (10 digits)
+            const phoneRegex = /^\d{10}$/;
+            if (!phoneRegex.test(phone)) {
+                document.getElementById('phoneError').classList.remove('hidden');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Show loading state
+                const submitBtn = document.getElementById('submitBtn');
+                const btnText = document.getElementById('btnText');
+                const btnLoader = document.getElementById('btnLoader');
+                
+                submitBtn.disabled = true;
+                btnText.classList.add('hidden');
+                btnLoader.classList.remove('hidden');
+                
+                // Store user data
+                const userData = { name, email, phone };
+                localStorage.setItem('glowUpUserData', JSON.stringify(userData));
+                
+                // Send data to backend database
+                sendToBackend(userData)
+                    .then(() => {
+                        // Success - show options after storing in database
+                        setTimeout(() => {
+                            showOptions(name);
+                        }, 1000);
+                    })
+                    .catch(() => {
+                        // Reset button state on error
+                        submitBtn.disabled = false;
+                        btnText.classList.remove('hidden');
+                        btnLoader.classList.add('hidden');
+                        alert('Error storing data. Please try again.');
+                    });
+            }
+        });
+
+        function showOptions(name) {
+            document.getElementById('formSection').classList.add('hidden');
+            document.getElementById('optionsSection').classList.remove('hidden');
+            document.getElementById('welcomeName').textContent = name;
+        }
+
+        function sendToBackend(userData) {
+            // Save to local storage for admin viewing
+            saveToLocalStorage(userData);
+            
+            // Try to send data to backend, but don't let errors stop the user experience
+            return fetch('http://localhost:5000/submit-user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: userData.name,
+                    email: userData.email,
+                    phone: userData.phone,
+                    timestamp: new Date().toISOString()
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    // Log error but don't throw - let user continue
+                    console.log('Backend not available, data saved locally only');
+                    return { success: true, message: 'Data saved locally' };
+                }
+            })
+            .then(data => {
+                console.log('Data handling completed:', data);
+                return data;
+            })
+            .catch(error => {
+                // Don't show error to user - just log it and continue
+                console.log('Backend connection failed, continuing with local storage only');
+                return { success: true, message: 'Data saved locally' };
+            });
+        }
+
+        function saveToLocalStorage(userData) {
+            // Get existing submissions or create empty array
+            let submissions = JSON.parse(localStorage.getItem('allSubmissions') || '[]');
+            
+            // Add new submission with timestamp
+            submissions.push({
+                name: userData.name,
+                email: userData.email,
+                phone: userData.phone,
+                timestamp: new Date().toISOString(),
+                submittedAt: new Date().toLocaleString()
+            });
+            
+            // Save back to localStorage
+            localStorage.setItem('allSubmissions', JSON.stringify(submissions));
+        }
+
+        function showAdminPanel() {
+            // Password protection for admin panel
+            const password = prompt('Enter admin password:');
+            if (password !== 'ilovemymom') {
+                alert('Access denied. Incorrect password.');
+                return;
+            }
+            
+            document.getElementById('formSection').classList.add('hidden');
+            document.getElementById('optionsSection').classList.add('hidden');
+            document.getElementById('adminPanel').classList.remove('hidden');
+            loadSubmissionsTable();
+        }
+
+        function loadSubmissionsTable() {
+            const submissions = JSON.parse(localStorage.getItem('allSubmissions') || '[]');
+            const tableContainer = document.getElementById('submissionsTable');
+            
+            if (submissions.length === 0) {
+                tableContainer.innerHTML = '<p class="text-white text-center">No submissions found</p>';
+                return;
+            }
+            
+            let tableHTML = `
+                <div class="overflow-x-auto">
+                    <table class="w-full text-white text-sm">
+                        <thead>
+                            <tr class="border-b border-white/20">
+                                <th class="text-left p-2">Name</th>
+                                <th class="text-left p-2">Email</th>
+                                <th class="text-left p-2">Phone</th>
+                                <th class="text-left p-2">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            submissions.forEach(submission => {
+                tableHTML += `
+                    <tr class="border-b border-white/10">
+                        <td class="p-2">${submission.name}</td>
+                        <td class="p-2">${submission.email}</td>
+                        <td class="p-2">${submission.phone}</td>
+                        <td class="p-2">${submission.submittedAt}</td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += '</tbody></table></div>';
+            tableContainer.innerHTML = tableHTML;
+        }
+
+        function exportToCSV() {
+            const submissions = JSON.parse(localStorage.getItem('allSubmissions') || '[]');
+            
+            if (submissions.length === 0) {
+                alert('No data to export');
+                return;
+            }
+            
+            // Create CSV content
+            let csvContent = 'Name,Email,Phone,Timestamp\n';
+            submissions.forEach(submission => {
+                csvContent += `"${submission.name}","${submission.email}","${submission.phone}","${submission.submittedAt}"\n`;
+            });
+            
+            // Create and download file
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'glowup_submissions.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all submission data? This cannot be undone.')) {
+                localStorage.removeItem('allSubmissions');
+                loadSubmissionsTable();
+                alert('All data cleared successfully');
+            }
+        }
+
+        function backToForm() {
+            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('formSection').classList.remove('hidden');
+        }
+
+        function navigateToPage(page) {
+            // Store current page for return navigation
+            localStorage.setItem('glowUpReturnPage', 'index.html');
+            window.location.href = page;
+        }
+
+        // Real-time phone number formatting
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 10) {
+                value = value.slice(0, 10);
+            }
+            e.target.value = value;
+        });
+
+        // Real-time email validation feedback
+        document.getElementById('email').addEventListener('blur', function(e) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const emailError = document.getElementById('emailError');
+            
+            if (e.target.value && !emailRegex.test(e.target.value)) {
+                emailError.classList.remove('hidden');
+                e.target.classList.add('border-red-400');
+            } else {
+                emailError.classList.add('hidden');
+                e.target.classList.remove('border-red-400');
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96969b8bc150343c',t:'MTc1NDIzMjQxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

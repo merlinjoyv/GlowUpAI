@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Fashion Specialist Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+        .chat-bubble-user {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .chat-bubble-ai {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .typing-indicator {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .fashion-icon {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+        .error-message {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        }
+                .disclaimer-note {
+            background: rgba(236, 72, 153, 0.1);
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="fashion-icon w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center">
+                <span class="text-4xl">👗</span>
+            </div>
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">AI Fashion Specialist</h1>
+            <p class="text-gray-600 text-lg">Your personal style consultant powered by AI</p>
+        </div>
+
+        <!-- Quick Categories -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <button onclick="askQuestion('What should I wear for a job interview?')" class="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+                <div class="text-2xl mb-2">💼</div>
+                <div class="text-sm font-medium text-gray-700">Work & Interview</div>
+            </button>
+            <button onclick="askQuestion('Give me casual weekend outfit ideas')" class="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+                <div class="text-2xl mb-2">👕</div>
+                <div class="text-sm font-medium text-gray-700">Casual Wear</div>
+            </button>
+            <button onclick="askQuestion('What should I wear to a wedding?')" class="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+                <div class="text-2xl mb-2">💒</div>
+                <div class="text-sm font-medium text-gray-700">Special Events</div>
+            </button>
+            <button onclick="askQuestion('Suggest makeup looks for evening party')" class="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+                <div class="text-2xl mb-2">💄</div>
+                <div class="text-sm font-medium text-gray-700">Beauty & Makeup</div>
+            </button>
+        </div>
+
+        <!-- Chat Container -->
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <!-- Chat Messages -->
+            <div id="chatMessages" class="h-96 overflow-y-auto p-6 space-y-4">
+                <div class="flex items-start space-x-3">
+                    <div class="chat-bubble-ai w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">AI</div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-sm p-4 max-w-md">
+                        <p class="text-gray-800">Hello! I'm your AI Fashion Specialist! 👋 I'm here to help you with outfits, styling tips, makeup advice, and fashion for any occasion. What can I help you style today?</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="border-t bg-gray-50 p-4">
+                <div class="flex space-x-3">
+                    <input 
+                        type="text" 
+                        id="userInput" 
+                        placeholder="Ask me about outfits, makeup, accessories, hair styling, or any fashion advice..."
+                        class="flex-1 border border-gray-300 rounded-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        onkeypress="handleKeyPress(event)"
+                        disabled
+                    >
+                
+                    <button 
+                        id="sendButton"
+                        onclick="sendMessage()" 
+                        class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled
+                    >
+                        Send
+                    </button>
+                </div>
+            </div>
+        </div>
+                <!-- Message Input -->
+                <div class="glass-card rounded-2xl p-4">
+                    <!-- Disclaimer Note -->
+                    <div class="disclaimer-note rounded-xl p-3 mb-4 text-black text-sm">
+                        <div class="flex items-start space-x-2">
+                            <span class="text-pink-500 mt-0.5">⚠️</span>
+                            <p><strong>Note:</strong> The suggestions are only based on training. They are not fully accurate. Please ask recommended questions for best results.</p>
+                        </div>
+                    </div>
+
+        <!-- Connection Status -->
+        <div id="connectionStatus" class="mt-4 text-center">
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-yellow-100 text-yellow-800">
+                <div class="w-2 h-2 bg-yellow-500 rounded-full mr-2 animate-pulse"></div>
+                Connecting to AI Fashion Assistant...
+            </div>
+        </div>
+
+        <!-- Fashion Categories Info -->
+        <div class="mt-8 grid md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-xl p-6 shadow-lg">
+                <h3 class="text-xl font-semibold text-gray-800 mb-3">👗 Styling Services</h3>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>• Complete outfit coordination</li>
+                    <li>• Body type specific advice</li>
+                    <li>• Occasion-based styling</li>
+                    <li>• Color matching guidance</li>
+                </ul>
+            </div>
+            <div class="bg-white rounded-xl p-6 shadow-lg">
+                <h3 class="text-xl font-semibold text-gray-800 mb-3">💄 Beauty & Hair</h3>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>• Makeup tutorials & tips</li>
+                    <li>• Hairstyle recommendations</li>
+                    <li>• Skincare advice</li>
+                    <li>• Beauty product suggestions</li>
+                </ul>
+            </div>
+            <div class="bg-white rounded-xl p-6 shadow-lg">
+                <h3 class="text-xl font-semibold text-gray-800 mb-3">💎 Accessories</h3>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>• Jewelry coordination</li>
+                    <li>• Bag & shoe pairing</li>
+                    <li>• Seasonal accessories</li>
+                    <li>• Investment piece advice</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration - Update these URLs to match your backend
+        const API_CONFIG = {
+            baseURL: 'http://localhost:3000/api', // Change this to your backend URL
+            endpoints: {
+                chat: '/fashion-chat',
+                health: '/health'
+            },
+            timeout: 30000 // 30 seconds timeout
+        };
+
+        // Chat state management
+        let chatHistory = [];
+        let isConnected = false;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            checkBackendConnection();
+        });
+
+        // Check if backend is available
+        async function checkBackendConnection() {
+            try {
+                const response = await fetch(`${API_CONFIG.baseURL}${API_CONFIG.endpoints.health}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    signal: AbortSignal.timeout(5000) // 5 second timeout for health check
+                });
+
+                if (response.ok) {
+                    setConnectionStatus('connected');
+                    enableChat();
+                } else {
+                    throw new Error('Backend not responding');
+                }
+            } catch (error) {
+                console.error('Backend connection failed:', error);
+                setConnectionStatus('disconnected');
+                showOfflineMessage();
+            }
+        }
+
+        // Update connection status UI
+        function setConnectionStatus(status) {
+            const statusElement = document.getElementById('connectionStatus');
+            
+            if (status === 'connected') {
+                isConnected = true;
+                statusElement.innerHTML = `
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-800">
+                        <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                        AI Fashion Assistant Ready
+                    </div>
+                `;
+            } else if (status === 'disconnected') {
+                isConnected = false;
+                statusElement.innerHTML = `
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-red-100 text-red-800">
+                        <div class="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
+                        Connection Failed - Check Backend
+                    </div>
+                `;
+            } else if (status === 'loading') {
+                statusElement.innerHTML = `
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-800">
+                        <div class="w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"></div>
+                        AI is thinking...
+                    </div>
+                `;
+            }
+        }
+
+        // Enable chat interface
+        function enableChat() {
+            document.getElementById('userInput').disabled = false;
+            document.getElementById('sendButton').disabled = false;
+            document.getElementById('userInput').placeholder = "Ask me about outfits, makeup, accessories, hair styling, or any fashion advice...";
+        }
+
+        // Show offline message
+        function showOfflineMessage() {
+            addMessage("I'm sorry, but I'm currently offline. Please check that your backend server is running and try refreshing the page.", 'error');
+        }
+
+        // Handle keyboard input
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        // Quick question buttons
+        function askQuestion(question) {
+            document.getElementById('userInput').value = question;
+            sendMessage();
+        }
+
+        // Main message sending function
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            
+            if (!message || !isConnected) return;
+
+            // Add user message to chat
+            addMessage(message, 'user');
+            chatHistory.push({ role: 'user', content: message });
+            input.value = '';
+
+            // Show typing indicator
+            showTypingIndicator();
+            setConnectionStatus('loading');
+
+            try {
+                // Send request to backend
+                const response = await fetch(`${API_CONFIG.baseURL}${API_CONFIG.endpoints.chat}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        chatHistory: chatHistory,
+                        timestamp: new Date().toISOString()
+                    }),
+                    signal: AbortSignal.timeout(API_CONFIG.timeout)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                // Hide typing indicator and show response
+                hideTypingIndicator();
+                setConnectionStatus('connected');
+                
+                if (data.response) {
+                    addMessage(data.response, 'ai');
+                    chatHistory.push({ role: 'assistant', content: data.response });
+                } else {
+                    throw new Error('No response from AI');
+                }
+
+            } catch (error) {
+                console.error('Error sending message:', error);
+                hideTypingIndicator();
+                setConnectionStatus('connected');
+                
+                let errorMessage = "I'm sorry, I'm having trouble responding right now. ";
+                
+                if (error.name === 'AbortError') {
+                    errorMessage += "The request timed out. Please try again.";
+                } else if (error.message.includes('HTTP error')) {
+                    errorMessage += "There was a server error. Please try again later.";
+                } else {
+                    errorMessage += "Please check your connection and try again.";
+                }
+                
+                addMessage(errorMessage, 'error');
+            }
+        }
+
+        // Add message to chat UI
+        function addMessage(message, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            
+            if (sender === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="flex items-start space-x-3 justify-end">
+                        <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl rounded-tr-sm p-4 max-w-md">
+                            <p class="whitespace-pre-wrap">${escapeHtml(message)}</p>
+                        </div>
+                        <div class="chat-bubble-user w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm">You</div>
+                    </div>
+                `;
+            } else if (sender === 'error') {
+                messageDiv.innerHTML = `
+                    <div class="flex items-start space-x-3">
+                        <div class="error-message w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm">⚠️</div>
+                        <div class="bg-red-50 border border-red-200 rounded-2xl rounded-tl-sm p-4 max-w-md">
+                            <p class="text-red-800 whitespace-pre-wrap">${escapeHtml(message)}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="flex items-start space-x-3">
+                        <div class="chat-bubble-ai w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm">AI</div>
+                        <div class="bg-gray-100 rounded-2xl rounded-tl-sm p-4 max-w-md">
+                            <div class="text-gray-800 whitespace-pre-wrap fashion-response">${formatFashionResponse(message)}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="flex items-start space-x-3">
+                    <div class="chat-bubble-ai w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm">AI</div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-sm p-4">
+                        <div class="typing-indicator text-gray-500">Analyzing your fashion needs... 💭</div>
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Hide typing indicator
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // Format fashion response with better styling
+        function formatFashionResponse(text) {
+            // Convert markdown-style formatting to HTML
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/\n/g, '<br>')
+                .replace(/• /g, '• ');
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Retry connection function
+        function retryConnection() {
+            setConnectionStatus('connecting');
+            setTimeout(checkBackendConnection, 1000);
+        }
+
+        // Auto-retry connection every 30 seconds if disconnected
+        setInterval(() => {
+            if (!isConnected) {
+                checkBackendConnection();
+            }
+        }, 30000);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'968b504ea4aa1ec2',t:'MTc1NDExMzk5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlowUpAI - Your Personal Fashion Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        .option-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .option-card.selected {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .magic-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            transition: all 0.3s ease;
+        }
+        
+        .magic-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+        }
+        
+        .step {
+            display: none;
+        }
+        
+        .step.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .recommendation-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 10px 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2">✨ GlowUpAI ✨</h1>
+            <p class="text-white/80 text-lg">Your Personal Fashion Assistant</p>
+        </div>
+
+        <!-- Step 1: Skin Tone Selection -->
+        <div id="step1" class="step active">
+            <div class="glass-effect p-8 mb-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">💫 Select Your Skin Tone</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectSkinTone('fair')">
+                        <div class="w-12 h-12 rounded-full bg-pink-100 mx-auto mb-2"></div>
+                        <p class="font-medium">Fair</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectSkinTone('light')">
+                        <div class="w-12 h-12 rounded-full bg-yellow-200 mx-auto mb-2"></div>
+                        <p class="font-medium">Light</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectSkinTone('medium')">
+                        <div class="w-12 h-12 rounded-full bg-yellow-600 mx-auto mb-2"></div>
+                        <p class="font-medium">Medium</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectSkinTone('olive')">
+                        <div class="w-12 h-12 rounded-full bg-yellow-700 mx-auto mb-2"></div>
+                        <p class="font-medium">Olive</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectSkinTone('tan')">
+                        <div class="w-12 h-12 rounded-full bg-orange-600 mx-auto mb-2"></div>
+                        <p class="font-medium">Tan</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectSkinTone('deep')">
+                        <div class="w-12 h-12 rounded-full bg-amber-900 mx-auto mb-2"></div>
+                        <p class="font-medium">Deep</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Occasion Selection -->
+        <div id="step2" class="step">
+            <div class="glass-effect p-8 mb-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">🎉 What's the Occasion?</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectOccasion('casual')">
+                        <div class="text-2xl mb-2">👕</div>
+                        <p class="font-medium">Casual</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectOccasion('wedding')">
+                        <div class="text-2xl mb-2">💒</div>
+                        <p class="font-medium">Wedding</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectOccasion('reception')">
+                        <div class="text-2xl mb-2">🥂</div>
+                        <p class="font-medium">Reception</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectOccasion('cocktail')">
+                        <div class="text-2xl mb-2">🍸</div>
+                        <p class="font-medium">Cocktail Party</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectOccasion('interview')">
+                        <div class="text-2xl mb-2">💼</div>
+                        <p class="font-medium">Interview</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectOccasion('bridesmaids')">
+                        <div class="text-2xl mb-2">👰</div>
+                        <p class="font-medium">Bridesmaids</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectOccasion('family')">
+                        <div class="text-2xl mb-2">👨‍👩‍👧‍👦</div>
+                        <p class="font-medium">Family Get Together</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectOccasion('birthday')">
+                        <div class="text-2xl mb-2">🎂</div>
+                        <p class="font-medium">Birthday Party</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectOccasion('date')">
+                        <div class="text-2xl mb-2">💕</div>
+                        <p class="font-medium">Date Night</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectOccasion('festival')">
+                        <div class="text-2xl mb-2">🎪</div>
+                        <p class="font-medium">Festivals</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectOccasion('movie')">
+                        <div class="text-2xl mb-2">🎬</div>
+                        <p class="font-medium">Movie Date</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectOccasion('lunch')">
+                        <div class="text-2xl mb-2">🍽</div>
+                        <p class="font-medium">Lunch Date</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectOccasion('dinner')">
+                        <div class="text-2xl mb-2">🍷</div>
+                        <p class="font-medium">Dinner Date</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectOccasion('office')">
+                        <div class="text-2xl mb-2">🏢</div>
+                        <p class="font-medium">Office</p>
+                    </div>
+                    <div class="option-card glass-effect p-4 text-center" onclick="selectOccasion('travel')">
+                        <div class="text-2xl mb-2">✈</div>
+                        <p class="font-medium">Travelling</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Outfit Selection -->
+        <div id="step3" class="step">
+            <div class="glass-effect p-8 mb-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">👗 Select Your Outfit Type</h2>
+                <div id="outfitOptions" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Options will be populated based on occasion -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Magic Button -->
+        <div id="step4" class="step">
+            <div class="glass-effect p-8 mb-6 text-center">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6">✨ Ready for Magic?</h2>
+                <p class="text-gray-600 mb-6">Click the magic button to get your personalized style recommendations!</p>
+                <button onclick="generateRecommendations()" class="magic-btn text-white px-8 py-4 rounded-full text-lg font-semibold">
+                    ✨ MAGIC ✨
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 5: Recommendations -->
+        <div id="step5" class="step">
+            <div class="glass-effect p-8 mb-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">🎨 Your Perfect Style Guide</h2>
+                <div id="recommendations">
+                    <!-- Recommendations will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 6: Ready Message -->
+        <div id="step6" class="step">
+            <div class="glass-effect p-8 mb-6 text-center">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">🌟 You Are Absolutely Ready!</h2>
+                <p class="text-lg text-gray-600 mb-6">With all these perfect picks, you're going to look absolutely stunning!</p>
+                <div class="text-6xl mb-4">💫</div>
+            </div>
+        </div>
+
+        <!-- Step 7: Thank You -->
+        <div id="step7" class="step">
+            <div class="glass-effect p-8 mb-6 text-center">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">💖 Thank You!</h2>
+                <p class="text-lg text-gray-600 mb-6">Thank you for choosing me to help with your style! I hope you love all the recommendations!</p>
+                <div class="text-6xl mb-4">🥰</div>
+                <button onclick="showMore()" class="magic-btn text-white px-6 py-3 rounded-full font-semibold">
+                    More →
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="text-center mt-6">
+            <button id="nextBtn" onclick="nextStep()" class="bg-white/20 text-white px-6 py-2 rounded-full font-medium backdrop-blur-sm border border-white/30 hover:bg-white/30 transition-all" style="display: none;">
+                Next Step →
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selections = {
+            skinTone: '',
+            occasion: '',
+            outfit: ''
+        };
+
+        const outfitOptions = {
+            casual: ['T-shirt & Jeans', 'Sundress', 'Casual Blouse', 'Shorts & Top', 'Maxi Dress', 'Cardigan Set'],
+            wedding: ['Saree', 'Lehenga', 'Anarkali', 'Gown', 'Sharara', 'Indo-Western'],
+            reception: ['Cocktail Dress', 'Elegant Saree', 'Designer Lehenga', 'Evening Gown', 'Palazzo Set', 'Fusion Wear'],
+            cocktail: ['Little Black Dress', 'Cocktail Saree', 'Jumpsuit', 'Midi Dress', 'Crop Top & Skirt', 'Blazer Dress'],
+            interview: ['Formal Suit', 'Blazer & Trousers', 'Shirt Dress', 'Formal Kurti', 'Pencil Skirt Set', 'Professional Blouse'],
+            bridesmaids: ['Matching Saree', 'Coordinated Lehenga', 'Bridesmaid Dress', 'Anarkali Set', 'Palazzo Suit', 'Gown'],
+            family: ['Kurti & Jeans', 'Casual Saree', 'Ethnic Dress', 'Palazzo Set', 'Long Kurta', 'Comfortable Dress'],
+            birthday: ['Party Dress', 'Trendy Top & Jeans', 'Skater Dress', 'Crop Top & Skirt', 'Jumpsuit', 'Festive Kurti'],
+            date: ['Romantic Dress', 'Chic Blouse & Skirt', 'Elegant Jumpsuit', 'Date Night Saree', 'Stylish Top & Jeans', 'Midi Dress'],
+            festival: ['Traditional Saree', 'Festive Lehenga', 'Ethnic Kurti Set', 'Sharara', 'Anarkali', 'Indo-Western'],
+            movie: ['Comfortable Jeans & Top', 'Casual Dress', 'Hoodie & Leggings', 'T-shirt Dress', 'Denim Jacket Set', 'Relaxed Fit Outfit'],
+            lunch: ['Smart Casual Dress', 'Blouse & Trousers', 'Midi Skirt Set', 'Casual Blazer Look', 'Chic Kurti', 'Day Dress'],
+            dinner: ['Elegant Dress', 'Formal Saree', 'Dinner Jacket Set', 'Sophisticated Jumpsuit', 'Evening Blouse & Skirt', 'Classy Outfit'],
+            office: ['Business Suit', 'Formal Shirt & Trousers', 'Professional Dress', 'Blazer Set', 'Office Kurti', 'Work Appropriate Outfit'],
+            travel: ['Comfortable Jeans', 'Travel Dress', 'Athleisure Set', 'Maxi Dress', 'Casual Layers', 'Easy-to-wear Outfit']
+        };
+
+        const styleRecommendations = {
+            fair: {
+                colors: ['Pastels', 'Soft Blues', 'Lavender', 'Mint Green', 'Coral', 'Light Pink', 'Cream', 'Navy Blue'],
+                hair: ['Soft Waves', 'Low Bun', 'Side Braid', 'Beach Waves', 'Half-up Half-down', 'Sleek Straight'],
+                jewelry: ['Silver Jewelry', 'Pearl Accessories', 'Delicate Gold', 'Rose Gold', 'Crystal Pieces', 'Minimalist Designs'],
+                makeup: ['Soft Pink Lips', 'Light Blush', 'Neutral Eyeshadow', 'Brown Mascara', 'Peachy Tones', 'Natural Glow'],
+                footwear: ['Nude Heels', 'White Sneakers', 'Pastel Flats', 'Light Sandals', 'Beige Boots', 'Silver Shoes']
+            },
+            light: {
+                colors: ['Warm Tones', 'Peach', 'Golden Yellow', 'Coral', 'Warm Pink', 'Camel', 'Ivory', 'Turquoise'],
+                hair: ['Loose Curls', 'Top Knot', 'Fishtail Braid', 'Voluminous Waves', 'Messy Bun', 'Layered Cut'],
+                jewelry: ['Gold Jewelry', 'Warm Metals', 'Amber Pieces', 'Copper Accessories', 'Statement Earrings', 'Layered Necklaces'],
+                makeup: ['Warm Coral Lips', 'Peachy Blush', 'Golden Eyeshadow', 'Brown Eyeliner', 'Warm Bronzer', 'Glowing Skin'],
+                footwear: ['Tan Heels', 'Gold Sandals', 'Brown Boots', 'Coral Flats', 'Warm-toned Sneakers', 'Camel Shoes']
+            },
+            medium: {
+                colors: ['Rich Colors', 'Emerald Green', 'Royal Blue', 'Deep Purple', 'Burgundy', 'Teal', 'Magenta', 'Black'],
+                hair: ['Sleek Ponytail', 'Glamorous Curls', 'Dutch Braid', 'High Bun', 'Side Swept', 'Textured Waves'],
+                jewelry: ['Bold Gold', 'Statement Pieces', 'Colorful Gems', 'Chunky Jewelry', 'Mixed Metals', 'Ethnic Designs'],
+                makeup: ['Bold Lip Colors', 'Defined Brows', 'Smoky Eyes', 'Contouring', 'Rich Blush', 'Dramatic Look'],
+                footwear: ['Bold Colored Heels', 'Statement Boots', 'Metallic Shoes', 'Patterned Flats', 'Colorful Sneakers', 'Embellished Sandals']
+            },
+            olive: {
+                colors: ['Earth Tones', 'Olive Green', 'Burnt Orange', 'Deep Red', 'Chocolate Brown', 'Mustard', 'Terracotta', 'Forest Green'],
+                hair: ['Natural Texture', 'Braided Crown', 'Low Ponytail', 'Tousled Waves', 'Side Part', 'Bohemian Style'],
+                jewelry: ['Antique Gold', 'Bronze Pieces', 'Natural Stones', 'Wooden Accessories', 'Vintage Jewelry', 'Earthy Tones'],
+                makeup: ['Earthy Lip Tones', 'Warm Blush', 'Bronze Eyeshadow', 'Natural Glow', 'Defined Features', 'Warm Undertones'],
+                footwear: ['Earth-tone Heels', 'Brown Leather', 'Suede Boots', 'Natural Sandals', 'Olive Sneakers', 'Wooden Heels']
+            },
+            tan: {
+                colors: ['Vibrant Colors', 'Bright Orange', 'Hot Pink', 'Electric Blue', 'Lime Green', 'Purple', 'Yellow', 'Red'],
+                hair: ['Afro Texture', 'Braided Styles', 'Twist Out', 'High Puff', 'Cornrows', 'Natural Curls'],
+                jewelry: ['Gold Statement', 'Colorful Beads', 'African-inspired', 'Bold Hoops', 'Layered Chains', 'Vibrant Gems'],
+                makeup: ['Vibrant Lips', 'Colorful Eyeshadow', 'Bold Blush', 'Highlighting', 'Dramatic Eyes', 'Rich Pigments'],
+                footwear: ['Bright Colored Shoes', 'Gold Heels', 'Colorful Sneakers', 'Statement Sandals', 'Patterned Flats', 'Bold Boots']
+            },
+            deep: {
+                colors: ['Jewel Tones', 'Deep Purple', 'Emerald', 'Sapphire Blue', 'Ruby Red', 'Gold', 'Silver', 'White'],
+                hair: ['Protective Styles', 'Box Braids', 'Locs', 'Twist Styles', 'Bantu Knots', 'Natural Afro'],
+                jewelry: ['Statement Gold', 'Silver Contrast', 'Precious Stones', 'Bold Designs', 'Cultural Pieces', 'Dramatic Jewelry'],
+                makeup: ['Rich Lip Colors', 'Bold Eyeshadow', 'Contouring', 'Highlighting', 'Dramatic Lashes', 'Glowing Skin'],
+                footwear: ['Metallic Shoes', 'Bold Heels', 'Statement Boots', 'Jewel-toned Flats', 'Gold Sandals', 'Contrasting Colors']
+            }
+        };
+
+        function selectSkinTone(tone) {
+            selections.skinTone = tone;
+            document.querySelectorAll('#step1 .option-card').forEach(function(card) {
+                card.classList.remove('selected');
+            });
+            event.target.closest('.option-card').classList.add('selected');
+            setTimeout(function() {
+                currentStep = 2;
+                showStep(currentStep);
+            }, 1500);
+        }
+
+        function selectOccasion(occasion) {
+            selections.occasion = occasion;
+            document.querySelectorAll('#step2 .option-card').forEach(function(card) {
+                card.classList.remove('selected');
+            });
+            event.target.closest('.option-card').classList.add('selected');
+            
+            // Populate outfit options based on occasion
+            var outfitContainer = document.getElementById('outfitOptions');
+            outfitContainer.innerHTML = '';
+            
+            outfitOptions[occasion].forEach(function(outfit) {
+                var outfitCard = document.createElement('div');
+                outfitCard.className = 'option-card glass-effect p-4 text-center';
+                outfitCard.onclick = function() { selectOutfit(outfit); };
+                outfitCard.innerHTML = '<div class="text-2xl mb-2">👗</div><p class="font-medium">' + outfit + '</p>';
+                outfitContainer.appendChild(outfitCard);
+            });
+            
+            setTimeout(function() {
+                currentStep = 3;
+                showStep(currentStep);
+            }, 1500);
+        }
+
+        function selectOutfit(outfit) {
+            selections.outfit = outfit;
+            document.querySelectorAll('#step3 .option-card').forEach(function(card) {
+                card.classList.remove('selected');
+            });
+            event.target.closest('.option-card').classList.add('selected');
+            setTimeout(function() {
+                currentStep = 4;
+                showStep(currentStep);
+            }, 1500);
+        }
+
+        function generateRecommendations() {
+            const recommendations = styleRecommendations[selections.skinTone];
+            const recommendationsContainer = document.getElementById('recommendations');
+            
+            recommendationsContainer.innerHTML = 
+                '<div class="recommendation-card">' +
+                    '<h3 class="text-xl font-semibold mb-3">🎨 Colors for Your ' + selections.skinTone + ' Skin Tone:</h3>' +
+                    '<p class="text-lg">' + recommendations.colors.join(', ') + '</p>' +
+                '</div>' +
+                
+                '<div class="recommendation-card">' +
+                    '<h3 class="text-xl font-semibold mb-3">💇‍♀ Hair Style Suggestions:</h3>' +
+                    '<p class="text-lg">' + recommendations.hair.join(', ') + '</p>' +
+                '</div>' +
+                
+                '<div class="recommendation-card">' +
+                    '<h3 class="text-xl font-semibold mb-3">💎 Jewelry Recommendations:</h3>' +
+                    '<p class="text-lg">' + recommendations.jewelry.join(', ') + '</p>' +
+                '</div>' +
+                
+                '<div class="recommendation-card">' +
+                    '<h3 class="text-xl font-semibold mb-3">💄 Makeup Suggestions:</h3>' +
+                    '<p class="text-lg">' + recommendations.makeup.join(', ') + '</p>' +
+                '</div>' +
+                
+                '<div class="recommendation-card">' +
+                    '<h3 class="text-xl font-semibold mb-3">👠 Footwear Options:</h3>' +
+                    '<p class="text-lg">' + recommendations.footwear.join(', ') + '</p>' +
+                '</div>';
+            
+            setTimeout(function() {
+                currentStep = 5;
+                showStep(currentStep);
+            }, 2000);
+        }
+        function showStep(step) {
+            document.querySelectorAll('.step').forEach(function(s) {
+                s.classList.remove('active');
+            });
+            document.getElementById('step' + step).classList.add('active');
+        }
+
+        function showMore() {
+            alert('🌟 Thank you for using GlowUpAI! This would typically navigate to additional features or a new page with more styling options and tips!');
+        }
+
+        function nextStep() {
+            if (currentStep < 7) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'968afacb50ee755c',t:'MTc1NDExMDQ5MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
