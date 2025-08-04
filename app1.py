@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS
 import csv
 import os
 
@@ -49,4 +49,5 @@ if __name__ == '__main__':
     print("🚀 Starting GlowUpAI Backend...")
     print("📁 Make sure your HTML file is in the same folder as this Python file")
     print("🌐 Backend will run on http://localhost:5000")
+
     app.run(debug=True, port=5000)
